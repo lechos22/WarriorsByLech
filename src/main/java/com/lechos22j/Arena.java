@@ -1,13 +1,11 @@
 package com.lechos22j;
 
+import com.lechos22j.entity.AIEntity;
 import com.lechos22j.entity.Entity;
 import com.lechos22j.entity.MonsterEntity;
 import com.lechos22j.entity.PlayerEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Arena {
     private int rows = 0;
@@ -21,6 +19,7 @@ public class Arena {
     }
 
     private final List<Entity> entities = new ArrayList<>();
+    private final List<AIEntity> aiEntities = new ArrayList<>();
     private final List<PlayerEntity> players = new ArrayList<>();
     private final List<PlayerSpawn> playerSpawns = new ArrayList<>();
     public List<PlayerSpawn> getPlayerSpawns() {
@@ -44,6 +43,7 @@ public class Arena {
     public void tick() {
         entities.removeIf(Entity::isDead);
         players.removeIf(Entity::isDead);
+        aiEntities.removeIf(Entity::isDead);
         entities.forEach(Entity::tick);
     }
 
@@ -54,6 +54,9 @@ public class Arena {
         entities.add(entity);
         if (entity instanceof PlayerEntity player) {
             players.add(player);
+        }
+        if (entity instanceof AIEntity aiEntity) {
+            aiEntities.add(aiEntity);
         }
     }
     public List<PlayerEntity> getPlayers() {
@@ -67,5 +70,9 @@ public class Arena {
             players.get(i).setX(playerSpawns.get(oldSize + i).getX());
             players.get(i).setY(playerSpawns.get(oldSize + i).getY());
         }
+    }
+
+    public List<AIEntity> getAIEntities() {
+        return aiEntities;
     }
 }

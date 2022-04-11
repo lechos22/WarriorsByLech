@@ -5,7 +5,6 @@ import com.lechos22j.entity.MageEntity;
 import com.lechos22j.entity.PlayerEntity;
 import com.lechos22j.entity.WarriorEntity;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class Main {
                     Thread.sleep(50);
                     arena.tick();
                     gameField.repaint();
-                    if(arena.getPlayers().size() == 1) throw new InterruptedException();
+                    if(arena.getPlayers().size() + arena.getAIEntities().size() == 1) throw new InterruptedException();
                 }
             } catch (InterruptedException ignored){}
             gameField.gameOver();
