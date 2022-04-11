@@ -10,7 +10,7 @@ public class ArrowEntity extends ProjectileEntity {
 
     public ArrowEntity(Entity owner, int x, int y, int xSpeed, int ySpeed) {
         super(owner, x, y, xSpeed, ySpeed);
-        this.attackStrength = 10;
+        this.attackStrength = 20;
     }
 
     @Override

@@ -16,6 +16,8 @@ public abstract class ProjectileEntity extends Entity {
         this.ySpeed = ySpeed;
         this.maxHealth = 1;
         this.health = 1;
+        this.maxMana = 0;
+        this.mana = 0;
     }
 
     @Override
