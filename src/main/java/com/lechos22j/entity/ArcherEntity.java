@@ -22,7 +22,7 @@ public class ArcherEntity extends PlayerEntity {
     public Entity attackLeft() {
         if(arrowCount > 0) {
             arrowCount--;
-            GameField.getInstance().getArena().addEntity(new ArrowEntity(this, this.getX() - 1, this.getY(), -1, 0));
+            GameField.getInstance().getArena().addEntity(new ArrowEntity(this, this.getX(), this.getY(), -1, 0));
         }
         return null;
     }
@@ -30,7 +30,7 @@ public class ArcherEntity extends PlayerEntity {
     public Entity attackRight() {
         if(arrowCount > 0) {
             arrowCount--;
-            GameField.getInstance().getArena().addEntity(new ArrowEntity(this, this.getX() + 1, this.getY(), 1, 0));
+            GameField.getInstance().getArena().addEntity(new ArrowEntity(this, this.getX(), this.getY(), 1, 0));
         }
         return null;
     }

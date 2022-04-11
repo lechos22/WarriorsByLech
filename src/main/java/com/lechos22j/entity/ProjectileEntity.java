@@ -21,9 +21,7 @@ public abstract class ProjectileEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        x += xSpeed;
-        y += ySpeed;
-        if(x < 0 || x > GameField.getInstance().getArena().getColumns() || y < 0 || y > GameField.getInstance().getArena().getRows()){
+        if(x < 0 || x >= GameField.getInstance().getArena().getColumns() || y < 0 || y >= GameField.getInstance().getArena().getRows()){
             setHealth(0);
         }
         if(xSpeed < 0){
@@ -44,5 +42,7 @@ public abstract class ProjectileEntity extends Entity {
                 owner.heal(e.isDead() ? 20 : 0);
             }
         }
+        x += xSpeed;
+        y += ySpeed;
     }
 }
