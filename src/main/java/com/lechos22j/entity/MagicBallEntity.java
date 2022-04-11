@@ -9,7 +9,7 @@ public class MagicBallEntity extends ProjectileEntity {
 
     public MagicBallEntity(Entity owner, int x, int y, int xSpeed, int ySpeed) {
         super(owner, x, y, xSpeed, ySpeed);
-        this.attackStrength = 25;
+        this.attackStrength = 35;
     }
 
     @Override
