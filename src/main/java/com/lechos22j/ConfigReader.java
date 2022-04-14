@@ -1,5 +1,7 @@
 package com.lechos22j;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,5 +22,12 @@ public class ConfigReader {
 
     public static Map<String, String> getConfig() {
         return config;
+    }
+    public static void saveConfig(String path) throws IOException {
+        FileWriter fileWriter = new FileWriter(path);
+        for (Map.Entry<String, String> entry : config.entrySet()) {
+            fileWriter.write(entry.getKey() + "=" + entry.getValue() + "\n");
+        }
+        fileWriter.close();
     }
 }
