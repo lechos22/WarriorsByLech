@@ -108,8 +108,18 @@ public class MenuWindow extends JFrame {
     private final JTextField arenaField;
     private final JComponent playersOptionsList;
     private final JButton saveButton;
+    private final JButton loadButton;
     private final JButton startButton;
     private final AtomicBoolean playersOptionsListLocked;
+    private final void waitForPlayersOptionsListLock() {
+        while (playersOptionsListLocked.get()) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private final AtomicInteger playersCount;
     private MenuWindow() {
         super("Menu - WarriorsByLech");
@@ -136,13 +146,7 @@ public class MenuWindow extends JFrame {
         }
         playersOptionsListLocked.set(false);
         addPlayerButton.addActionListener(e -> {
-            while (playersOptionsListLocked.get()) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            waitForPlayersOptionsListLock();
             playersOptionsListLocked.set(true);
             playersCount.incrementAndGet();
             playersOptionsList.add(new PlayerOptions(playersCount.get() - 1));
@@ -151,13 +155,7 @@ public class MenuWindow extends JFrame {
             repaint();
         });
         removePlayerButton.addActionListener(e -> {
-            while (playersOptionsListLocked.get()) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            waitForPlayersOptionsListLock();
             if (playersCount.get() <= 2){
                 return;
             }
@@ -170,17 +168,8 @@ public class MenuWindow extends JFrame {
         add(playersOptionsList);
         saveButton = new JButton("Save options!");
         saveButton.setBounds(10, 100, 200, 50);
-        add(saveButton);
-        startButton = new JButton("Start game!");
-        startButton.setBounds(10, 160, 200, 50);
-        add(startButton);
-        setLayout(null);
-        startButton.addActionListener(e -> {
-            apply();
-            Main.running = true;
-        });
         saveButton.addActionListener(e -> {
-            apply();
+            applyOptions();
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save options");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -206,13 +195,70 @@ public class MenuWindow extends JFrame {
                 dialog.setVisible(true);
             }
         });
+        add(saveButton);
+        loadButton = new JButton("Load options!");
+        loadButton.setBounds(10, 160, 200, 50);
+        loadButton.addActionListener(e -> {
+            applyOptions();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setApproveButtonText("Load");
+            fileChooser.setApproveButtonToolTipText("Load options");
+            fileChooser.setDialogTitle("Load options");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                try {
+                    ConfigReader.loadConfig(fileChooser.getSelectedFile().getAbsolutePath());
+                    reloadOptions();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                JDialog dialog = new JDialog(this, "File selection aborted", true);
+                dialog.setSize(300, 100);
+                dialog.setLayout(new GridLayout(2, 3));
+                dialog.add(new JComponent() {});
+                dialog.add(new JLabel("File not loaded!"));
+                dialog.add(new JComponent() {});
+                dialog.add(new JComponent() {});
+                JButton ok = new JButton("OK");
+                ok.addActionListener(e1 -> dialog.dispose());
+                dialog.add(ok);
+                dialog.add(new JComponent() {});
+                dialog.setVisible(true);
+            }
+        });
+        add(loadButton);
+        startButton = new JButton("Start game!");
+        startButton.setBounds(10, 220, 200, 50);
+        startButton.addActionListener(e -> {
+            applyOptions();
+            Main.running = true;
+        });
+        add(startButton);
+        setLayout(null);
     }
-    public void apply(){
+    public void applyOptions(){
         ConfigReader.getConfig().put("arena", arenaField.getText());
+        waitForPlayersOptionsListLock();
+        playersOptionsListLocked.set(true);
         ConfigReader.getConfig().put("players_count", String.valueOf(playersCount.get()));
         for (int i = 0; i < playersCount.get(); i++)
             if(playersOptionsList.getComponent(i) instanceof PlayerOptions playerOptions)
                 playerOptions.apply();
+        playersOptionsListLocked.set(false);
+    }
+    public void reloadOptions(){
+        arenaField.setText(ConfigReader.getConfig().get("arena"));
+        waitForPlayersOptionsListLock();
+        playersOptionsListLocked.set(true);
+        playersCount.set(Integer.parseInt(ConfigReader.getConfig().get("players_count")));
+        playersOptionsList.removeAll();
+        for (int i = 0; i < playersCount.get(); i++)
+            playersOptionsList.add(new PlayerOptions(i));
+        playersOptionsList.validate();
+        playersOptionsListLocked.set(false);
+        repaint();
     }
     private static MenuWindow instance;
     public static MenuWindow getInstance() {
