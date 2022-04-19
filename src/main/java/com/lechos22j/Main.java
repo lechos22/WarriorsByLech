@@ -35,7 +35,7 @@ public class Main {
                     if(arena.getPlayers().size() + arena.getAIEntities().size() == 1) throw new InterruptedException();
                 }
             } catch (InterruptedException ignored){}
-            gameField.gameOver();
+            gameField.gameOver(arena.getPlayers().isEmpty() ? arena.getAIEntities().get(0) : arena.getPlayers().get(0));;
         });
         mainLoop.start();
     }

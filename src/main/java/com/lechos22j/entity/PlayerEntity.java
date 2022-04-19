@@ -79,4 +79,8 @@ public abstract class PlayerEntity extends Entity {
             attackRight();
         }
     }
+
+    public String getName() {
+        return name;
+    }
 }

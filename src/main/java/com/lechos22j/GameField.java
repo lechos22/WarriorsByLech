@@ -45,8 +45,12 @@ public class GameField extends JPanel {
             }
         }
     }
-    public void gameOver(){
-        JOptionPane.showMessageDialog(this, "Game Over");
+    public void gameOver(Entity lastEntity) {
+        if (lastEntity instanceof PlayerEntity playerEntity) {
+            JOptionPane.showMessageDialog(this, "Game Over!\n" + playerEntity.getName() + " wins!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Game Over!\nAI wins!");
+        }
         System.exit(0);
     }
 }
