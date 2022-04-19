@@ -9,7 +9,15 @@ public class MagicBallEntity extends ProjectileEntity {
 
     public MagicBallEntity(Entity owner, int x, int y, int xSpeed, int ySpeed) {
         super(owner, x, y, xSpeed, ySpeed);
-        this.attackStrength = 35;
+        this.maxHealth = 4;
+        this.health = 4;
+        this.attackStrength = 40;
+    }
+
+    @Override
+    public void tick() {
+        this.damage(1);
+        super.tick();
     }
 
     @Override
