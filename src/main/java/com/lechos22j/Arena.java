@@ -2,7 +2,9 @@ package com.lechos22j;
 
 import com.lechos22j.entity.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Arena {
     private int rows = 0;
@@ -36,6 +38,7 @@ public class Arena {
             arena.rows++;
             arena.columns = line.length();
         }
+        arena.background = Utils.loadResourceImage("/arenas/backgrounds/" + resource + ".png");
         return arena;
     }
 
@@ -73,5 +76,11 @@ public class Arena {
 
     public List<AIEntity> getAIEntities() {
         return aiEntities;
+    }
+
+    private Image background = null;
+
+    public Image getBackground() {
+        return background;
     }
 }

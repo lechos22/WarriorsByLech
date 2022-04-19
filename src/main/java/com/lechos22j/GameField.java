@@ -38,6 +38,7 @@ public class GameField extends JPanel {
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         if (arena != null) {
+            g.drawImage(arena.getBackground(), 0, 0, null);
             for (Entity entity : arena.getEntities()) {
                 g.drawImage(entity.getImage(), entity.getX() * 40, entity.getY() * 80, this);
                 if(entity.shouldShowStats()) {
