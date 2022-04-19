@@ -25,22 +25,6 @@ public abstract class PlayerEntity extends Entity {
         this.attack_right_key = KeyEvent.class.getField(ConfigReader.getConfig().get("player" + player_id + "_attack_right")).getInt(null);
     }
 
-    public void tryChangePosition(int x, int y){
-        var arena  = GameField.getInstance().getArena();
-        AtomicBoolean canMove = new AtomicBoolean(x < arena.getColumns() && x >= 0 && y < arena.getRows() && y >= 0);
-        if(canMove.get()) arena.getEntities().forEach(e -> {
-            if(e.getX() == x && e.getY() == y) {
-                canMove.set(false);
-            }
-        });
-        if(canMove.get()) {
-            this.x = x;
-            this.y = y;
-        } else {
-            this.damage(10);
-        }
-    }
-
     @Override
     public Entity attackLeft() {
         Entity e = super.attackLeft();

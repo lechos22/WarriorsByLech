@@ -1,9 +1,6 @@
 package com.lechos22j;
 
-import com.lechos22j.entity.AIEntity;
-import com.lechos22j.entity.Entity;
-import com.lechos22j.entity.MonsterEntity;
-import com.lechos22j.entity.PlayerEntity;
+import com.lechos22j.entity.*;
 
 import java.util.*;
 
@@ -33,6 +30,8 @@ public class Arena {
             for(int i = 0; i < line.length(); i++){
                 if(line.charAt(i) == 'p') arena.playerSpawns.add(new PlayerSpawn(i, arena.rows));
                 if(line.charAt(i) == 'm') arena.addEntity(new MonsterEntity(i, arena.rows));
+                // o is for obstacle
+                if(line.charAt(i) == 'o') arena.addEntity(new ObstacleEntity(i, arena.rows));
             }
             arena.rows++;
             arena.columns = line.length();

@@ -40,8 +40,10 @@ public class GameField extends JPanel {
         if (arena != null) {
             for (Entity entity : arena.getEntities()) {
                 g.drawImage(entity.getImage(), entity.getX() * 40, entity.getY() * 80, this);
-                g.drawString(String.valueOf(entity.getHealth()), entity.getX() * 40, entity.getY() * 80 + 12);
-                g.drawString(String.valueOf(entity.getMana()), entity.getX() * 40, entity.getY() * 80 + 26);
+                if(entity.shouldShowStats()) {
+                    g.drawString(String.valueOf(entity.getHealth()), entity.getX() * 40, entity.getY() * 80 + 12);
+                    g.drawString(String.valueOf(entity.getMana()), entity.getX() * 40, entity.getY() * 80 + 26);
+                }
             }
         }
     }

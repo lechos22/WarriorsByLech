@@ -5,10 +5,16 @@ import com.lechos22j.Utils;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Entity {
     protected int x;
     protected int y;
+
+    protected boolean showStats = true;
+    public boolean shouldShowStats() {
+        return showStats;
+    }
 
     public int getX() {
         return x;
@@ -54,6 +60,19 @@ public abstract class Entity {
     }
     public void attack(Entity e){
         e.damage(attackStrength);
+    }
+    public void tryChangePosition(int x, int y){
+        var arena  = GameField.getInstance().getArena();
+        AtomicBoolean canMove = new AtomicBoolean(x < arena.getColumns() && x >= 0 && y < arena.getRows() && y >= 0);
+        if(canMove.get()) arena.getEntities().forEach(e -> {
+            if(e.getX() == x && e.getY() == y) {
+                canMove.set(false);
+            }
+        });
+        if(canMove.get()) {
+            this.x = x;
+            this.y = y;
+        }
     }
     public Entity attackLeft(){
         Entity target = GameField.getInstance().getArena().getEntities().stream().reduce(null, (e1, e2) -> e2 != null && (e2.x == x - 1 && e2.y == y) ? e2 : e1);

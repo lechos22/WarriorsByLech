@@ -18,6 +18,7 @@ public abstract class ProjectileEntity extends Entity {
         this.health = 1;
         this.maxMana = 0;
         this.mana = 0;
+        this.showStats = false;
     }
 
     @Override
