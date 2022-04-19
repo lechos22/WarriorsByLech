@@ -17,16 +17,20 @@ public class MageEntity extends PlayerEntity {
     @Override
     public Entity attackLeft() {
         if(this.mana >= 30) {
-            GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() - 1, this.getY(), -1, 0));
-            setMana(mana - 30);
+            if(this.getX() - 1 >= 0) {
+                GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() - 1, this.getY(), -1, 0));
+                setMana(mana - 30);
+            }
         }
         return null;
     }
     @Override
     public Entity attackRight() {
         if(this.mana >= 30) {
-            GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() + 1, this.getY(), 1, 0));
-            setMana(mana - 30);
+            if(this.getX() + 1 < GameField.getInstance().getWidth()) {
+                GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() + 1, this.getY(), 1, 0));
+                setMana(mana - 30);
+            }
         }
         return null;
     }
