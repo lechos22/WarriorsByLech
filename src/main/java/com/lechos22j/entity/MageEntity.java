@@ -12,6 +12,9 @@ public class MageEntity extends PlayerEntity {
         this.health = maxHealth;
         this.maxMana = 100;
         this.mana = maxMana;
+        this.animations.put("base", Utils.loadResourceImage("/images/mage/base.png"));
+        this.animations.put("left", Utils.loadResourceImage("/images/mage/left.png"));
+        this.animations.put("right", Utils.loadResourceImage("/images/mage/right.png"));
     }
 
     @Override
@@ -21,6 +24,8 @@ public class MageEntity extends PlayerEntity {
                 GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() - 1, this.getY(), -1, 0));
                 setMana(mana - 30);
             }
+            animation = "left";
+            animationLength = 5;
         }
         return null;
     }
@@ -31,13 +36,9 @@ public class MageEntity extends PlayerEntity {
                 GameField.getInstance().getArena().addEntity(new MagicBallEntity(this, this.getX() + 1, this.getY(), 1, 0));
                 setMana(mana - 30);
             }
+            animation = "right";
+            animationLength = 5;
         }
         return null;
-    }
-
-    private static final Image BASE_IMAGE = Utils.loadResourceImage("/images/mage/base.png");
-    @Override
-    public Image getImage() {
-        return BASE_IMAGE;
     }
 }

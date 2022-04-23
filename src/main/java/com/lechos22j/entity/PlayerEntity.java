@@ -1,10 +1,11 @@
 package com.lechos22j.entity;
 
 import com.lechos22j.ConfigReader;
-import com.lechos22j.GameField;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class PlayerEntity extends Entity {
     protected String name;
@@ -15,6 +16,10 @@ public abstract class PlayerEntity extends Entity {
     protected int attack_right_key;
     protected int attack_left_key;
 
+    protected String animation = "base";
+    protected Map<String, Image> animations;
+    protected int animationLength = 0;
+
     protected PlayerEntity(int player_id) throws NoSuchFieldException, IllegalAccessException {
         this.name = ConfigReader.getConfig().get("player" + player_id + "_name");
         this.up_key = KeyEvent.class.getField(ConfigReader.getConfig().get("player" + player_id + "_up")).getInt(null);
@@ -23,6 +28,7 @@ public abstract class PlayerEntity extends Entity {
         this.right_key = KeyEvent.class.getField(ConfigReader.getConfig().get("player" + player_id + "_right")).getInt(null);
         this.attack_left_key = KeyEvent.class.getField(ConfigReader.getConfig().get("player" + player_id + "_attack_left")).getInt(null);
         this.attack_right_key = KeyEvent.class.getField(ConfigReader.getConfig().get("player" + player_id + "_attack_right")).getInt(null);
+        this.animations = new HashMap<>();
     }
 
     @Override
@@ -31,6 +37,8 @@ public abstract class PlayerEntity extends Entity {
         if(e instanceof MonsterEntity) {
             heal(e.isDead() ? 20 : 0);
         }
+        animation = "left";
+        animationLength = 5;
         return e;
     }
 
@@ -40,6 +48,8 @@ public abstract class PlayerEntity extends Entity {
         if(e instanceof MonsterEntity) {
             heal(e.isDead() ? 20 : 0);
         }
+        animation = "right";
+        animationLength = 5;
         return e;
     }
 
@@ -66,5 +76,14 @@ public abstract class PlayerEntity extends Entity {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Image getImage() {
+        if (animationLength <= 0)
+            animation = "base";
+        else
+            animationLength--;
+        return animations.get(animation);
     }
 }

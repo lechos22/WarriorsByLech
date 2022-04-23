@@ -30,7 +30,7 @@ public class GameField extends JPanel {
     public void setArena(Arena arena) {
         this.arena = arena;
         setSize(arena.getColumns() * 40, arena.getRows() * 80);
-        MainWindow.getInstance().setSize(arena.getColumns() * 40 + 15, arena.getRows() * 80 + 30);
+        MainWindow.getInstance().setSize(arena.getColumns() * 40 + 15, arena.getRows() * 80 + 40);
     }
     public Arena getArena() {
         return arena;

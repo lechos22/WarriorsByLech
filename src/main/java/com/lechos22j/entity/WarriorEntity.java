@@ -12,10 +12,8 @@ public class WarriorEntity extends PlayerEntity {
         this.maxMana = 0;
         this.mana = maxMana;
         this.attackStrength = 20;
-    }
-    private static final Image BASE_IMAGE = Utils.loadResourceImage("/images/warrior/base.png");
-    @Override
-    public Image getImage() {
-        return BASE_IMAGE;
+        this.animations.put("base", Utils.loadResourceImage("/images/warrior/base.png"));
+        this.animations.put("left", Utils.loadResourceImage("/images/warrior/left.png"));
+        this.animations.put("right", Utils.loadResourceImage("/images/warrior/right.png"));
     }
 }
