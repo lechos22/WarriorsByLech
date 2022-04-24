@@ -19,6 +19,7 @@ public class Arena {
 
     private final List<Entity> entities = new ArrayList<>();
     private final List<AIEntity> aiEntities = new ArrayList<>();
+    private final List<Trap> traps = new ArrayList<>();
     private final List<PlayerEntity> players = new ArrayList<>();
     private final List<PlayerSpawn> playerSpawns = new ArrayList<>();
     public List<PlayerSpawn> getPlayerSpawns() {
@@ -32,8 +33,8 @@ public class Arena {
             for(int i = 0; i < line.length(); i++){
                 if(line.charAt(i) == 'p') arena.playerSpawns.add(new PlayerSpawn(i, arena.rows));
                 if(line.charAt(i) == 'm') arena.addEntity(new MonsterEntity(i, arena.rows));
-                // o is for obstacle
                 if(line.charAt(i) == 'o') arena.addEntity(new ObstacleEntity(i, arena.rows));
+                if(line.charAt(i) == 't') arena.traps.add(new Trap(i, arena.rows));
             }
             arena.rows++;
             arena.columns = line.length();
@@ -47,6 +48,7 @@ public class Arena {
         players.removeIf(Entity::isDead);
         aiEntities.removeIf(Entity::isDead);
         entities.forEach(Entity::tick);
+        traps.forEach(Trap::tick);
     }
 
     public List<Entity> getEntities() {
